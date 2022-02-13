@@ -1,0 +1,17 @@
+.link {
+  text-decoration: none;
+  margin-left: 3px;
+  margin-right: 3px;
+  color: black;
+}
+
+.link:hover {
+    color: brown;
+}
+
+#navbar {
+    padding: 1rem;
+    border-bottom: 1px solid #dee2e6;
+    color: black;
+    font-size: large;
+}

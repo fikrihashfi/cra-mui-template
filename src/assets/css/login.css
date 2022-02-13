@@ -1,0 +1,19 @@
+
+#login-wrapper {
+    height: 100vh;
+    display: flex;
+    position: relative;
+    background: #da9f17 url('../images/backgound-img.jpg') center center no-repeat;
+    align-items: center;
+    background-size: cover;
+    justify-content: center;
+    background-blend-mode: multiply;
+}
+
+.card-shaped{
+    border-radius: 24px 24px 0px 0px !important;
+}
+
+.card-shaped:hover {
+    box-shadow: 2px 5px 10px black !important;
+}

@@ -1,0 +1,9 @@
+#banner {
+    height: 350px;
+    border-bottom: 1px solid #dee2e6;
+    margin-bottom: 20px;
+    background: #555454 url('../images/banner-img.jpg') center center no-repeat;
+    background-size: cover;
+    color: white;
+    background-blend-mode: multiply;
+}
