@@ -37,6 +37,7 @@ const FormTable = () => {
       <Form handleFormSubmit={handleFormSubmit} defaultBtn={false}>
         <Input
           id='idTable'
+          name='idTable'
           label='ID Table'
           error={formError.idTable}
           placeholder='Enter ID'
@@ -45,6 +46,7 @@ const FormTable = () => {
         ></Input>
         <Input
           id='tableNumber'
+          name='tableNumber'
           label='Table Number'
           error={formError.tableNumber}
           placeholder='Enter Number'
@@ -53,6 +55,7 @@ const FormTable = () => {
         ></Input>
         <Select
           id='status'
+          name='status'
           label='Status'
           options={tableStatus}
           error={formError.status}

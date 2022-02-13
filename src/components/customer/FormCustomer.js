@@ -36,6 +36,7 @@ const FormCustomer = () => {
       <Form handleFormSubmit={handleFormSubmit} defaultBtn={false}>
         <Input
           id='idCustomer'
+          name='idCustomer'
           label='ID Customer'
           error={formError.idCustomer}
           placeholder='Enter ID'
@@ -44,6 +45,7 @@ const FormCustomer = () => {
         ></Input>
         <Input
           id='name'
+          name='name'
           label='Name'
           error={formError.name}
           placeholder='Enter Name'
@@ -52,6 +54,7 @@ const FormCustomer = () => {
         ></Input>
         <Input
           id='email'
+          name='email'
           label='Email'
           type='email'
           error={formError.email}
@@ -61,6 +64,7 @@ const FormCustomer = () => {
         ></Input>
         <Input
           id='address'
+          name='address'
           label='address'
           type='text'
           error={formError.address}

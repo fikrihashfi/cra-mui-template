@@ -36,6 +36,7 @@ const FormMenu = () => {
       <Form handleFormSubmit={handleFormSubmit} defaultBtn={false}>
         <Input
           id='idMenu'
+          name='idMenu'
           label='ID Menu'
           error={formError.idMenu}
           placeholder='Enter ID'
@@ -44,6 +45,7 @@ const FormMenu = () => {
         ></Input>
         <Input
           id='name'
+          name='name'
           label='Name'
           error={formError.name}
           placeholder='Enter Name'
@@ -52,6 +54,7 @@ const FormMenu = () => {
         ></Input>
         <Input
           id='price'
+          name='price'
           label='Price'
           type='number'
           error={formError.price}

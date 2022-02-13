@@ -1,49 +1,53 @@
-import { useDispatch } from "react-redux";
-import { changeForm } from "../../../redux/actions/Form";
+import {
+  FormControl,
+  FormHelperText,
+  InputLabel,
+  MenuItem,
+  Select,
+} from '@mui/material';
+import { useDispatch } from 'react-redux';
+import { changeForm } from '../../../redux/actions/Form';
 
-const Select = (props) => {
+const CSelect = (props) => {
   const dispatch = useDispatch();
 
   const handleChange = (e) => {
-    dispatch(changeForm({ name: e.target.id, value: e.target.value }));
+    dispatch(changeForm({ name: e.target.name, value: e.target.value }));
     if (props.validation) props.validation();
   };
 
   return (
-    <div className='mb-3'>
-      <label htmlFor={props.id} className='form-label'>
+    <FormControl error={props.error ? true : false}>
+      <InputLabel htmlFor={props.id} variant="standard">
         {props.label ?? ''}
-      </label>
-      <select
-        className='form-select'
+      </InputLabel>
+      <Select
+        className="form-select"
         id={props.id ?? ''}
+        name={props.name ?? ''}
         aria-describedby={props.id ?? ''}
-        value={props.value}
+        value={props.value??''}
         onChange={handleChange}
-        placeholder={props.placeholder}
+        placeholder={props.placeholder ?? ''}
+        variant='standard'
+        label={props.label ?? ''}
       >
-        <option value=''>-- select --</option>
+        <MenuItem value="">-- select --</MenuItem>
         {props.options.map((val, idx) => {
           return (
-            <option key={idx} value={val.value}>
+            <MenuItem key={idx} value={val.value}>
               {val.text}
-            </option>
+            </MenuItem>
           );
         })}
-      </select>
+      </Select>
       {props.error == null ? (
         ''
       ) : (
-        <div
-          id='nameHelp'
-          className='form-text'
-          style={{ color: 'red', fontSize: '12px' }}
-        >
-          {props.error}
-        </div>
+        <FormHelperText variant='standard'>{props.error ?? ''}</FormHelperText>
       )}
-    </div>
+    </FormControl>
   );
 };
 
-export default Select;
+export default CSelect;

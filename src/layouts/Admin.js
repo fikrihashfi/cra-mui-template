@@ -22,7 +22,6 @@ const Admin = ({ children }) => {
     <>
       <Navbar />
       {children}
-      <Footer />
     </>
   );
 };

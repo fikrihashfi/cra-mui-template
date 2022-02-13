@@ -48,6 +48,7 @@ const FormProduct = () => {
         <Form handleFormSubmit={handleFormSubmit} defaultBtn={false}>
           <Input
             id='id'
+            name='id'
             label='ID Product'
             error={formError.id}
             placeholder='Enter ID'
@@ -56,6 +57,7 @@ const FormProduct = () => {
           ></Input>
           <Input
             id='name'
+            name='name'
             label='Name'
             error={formError.name}
             placeholder='Enter Name'
