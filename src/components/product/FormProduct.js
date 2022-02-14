@@ -1,82 +1,87 @@
-import React, { useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { useNavigate, useParams } from 'react-router-dom';
-import {
-  changeFormError,
-  clearForm,
-} from '../../redux/actions/Form';
-import { addProduct, getProduct, updateProduct } from '../../redux/actions/Product';
-import { pages } from '../../utils/params';
-import { validations } from '../../utils/validations';
-import Button from '../common/button/Button';
 import Form from '../common/form/Form';
-import Input from '../common/form/Input';
+import { Grid, TextField, Button } from '@mui/material';
+import { productValidationSchema } from '../../utils/validations';
+import { useFormik } from 'formik';
+import { useEffect } from 'react';
 
-const FormProduct = () => {
-  const navigate = useNavigate();
-  const dispatch = useDispatch();
-  const params = useParams();
+const FormProduct = ({ getProduct, editedData, handleAdd, handleModal }) => {
 
-  const { loading, form, formError } = useSelector((state) => state.form);
-  const inputValidationChange = (data) => dispatch(changeFormError(data))
-
-  const handleFormSubmit = (e) => {
-    e.preventDefault();
-    if (validations[pages.product].validate(form, inputValidationChange)) {
-      if (params.id) {
-        dispatch(updateProduct({ id:params.id, data: form }));
-      } else {
-        dispatch(addProduct(form));
-      }
-      dispatch(clearForm());
-      navigate('/admin/product');
+  const formik = useFormik({
+    initialValues: {
+      id: '',
+      name: '',
+    },
+    validationSchema: productValidationSchema,
+    onSubmit: (values, { resetForm }) => {
+      handleAdd(values)
+      resetForm();
+      if (handleModal) handleModal(false);
+    },
+  });
+  
+  useEffect(()=>{
+    if(editedData.id!=null){
+      getProduct(editedData.id).then((val)=>{
+        formik.setValues(val.data)
+      })
     }
-  };
-
-  useEffect(() => {
-    dispatch(clearForm());
-    if (params.id) {
-      dispatch(getProduct(params.id));
-    }
-  }, []);
+  }, [editedData.id])
 
   return (
     <>
-      {loading ? (
-        'Loading data....'
-      ) : (
-        <Form handleFormSubmit={handleFormSubmit} defaultBtn={false}>
-          <Input
-            id='id'
-            name='id'
-            label='ID Product'
-            error={formError.id}
-            placeholder='Enter ID'
-            value={form.id}
-            validation={() => {}}
-          ></Input>
-          <Input
-            id='name'
-            name='name'
-            label='Name'
-            error={formError.name}
-            placeholder='Enter Name'
-            value={form.name}
-            validation={() => {}}
-          ></Input>
-          <div>
-            <Button
-              handleClick={() => {
-                navigate('/admin/product');
-              }}
-              type='button'
-              text='Cancel'
-              className='btn-warning text-white m-2'
-            />
-            <Button type='submit' text='Save' className='btn-success m-2' />
-          </div>
-        </Form>
-      )}
+      <Form handleFormSubmit={formik.handleSubmit} defaultBtn={false}>
+        <Grid container spacing={1}>
+          <Grid item md={12}>
+            <TextField
+              fullWidth
+              id='id'
+              name='id'
+              label='ID Product'
+              value={formik.values.id}
+              onChange={formik.handleChange}
+              error={formik.touched.id && Boolean(formik.errors.id)}
+              helperText={formik.touched.id && formik.errors.id}
+              variant='standard'
+            ></TextField>
+          </Grid>
+          <Grid item md={12}>
+            <TextField
+              fullWidth
+              id='name'
+              name='name'
+              label='Name'
+              value={formik.values.name}
+              onChange={formik.handleChange}
+              error={formik.touched.name && Boolean(formik.errors.name)}
+              helperText={formik.touched.name && formik.errors.name}
+              variant='standard'
+            ></TextField>
+          </Grid>
+          <Grid item md={12} marginTop='10px'>
+            <div style={{ textAlign: 'right' }}>
+              <Button
+                onClick={() => {
+                  if (handleModal) handleModal(false);
+                }}
+                type='button'
+                color='warning'
+                variant='contained'
+                style={{ margin: '2px' }}
+              >
+                Cancel
+              </Button>
+              <Button
+                type='submit'
+                color='success'
+                variant='contained'
+                style={{ margin: '2px' }}
+              >
+                Save
+              </Button>
+            </div>
+          </Grid>
+        </Grid>
+      </Form>
     </>
   );
 };

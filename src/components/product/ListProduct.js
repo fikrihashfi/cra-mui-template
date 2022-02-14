@@ -1,42 +1,69 @@
-import { TableCell, TableRow, Button, Alert, Snackbar } from '@mui/material';
-import { useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
 import {
-  deleteProduct,
-  getProducts,
-  setSnackbar,
-} from '../../redux/actions/Product';
-import Table from '../common/table/Table';
-import TableBody from '../common/table/TableBody';
-import TableHead from '../common/table/TableHead';
+  TableContainer,
+  TableCell,
+  TableRow,
+  Table,
+  TableBody,
+  TableHead,
+  Modal,
+  Button,
+  Typography,
+} from '@mui/material';
+import { Box } from '@mui/system';
+import { useEffect, useState } from 'react';
+import FormProduct from './FormProduct';
 
-const ListProduct = () => {
-  const product = useSelector((state) => state.product);
-  const navigate = useNavigate();
-  const dispatch = useDispatch();
+const modalStyle = {
+  position: 'absolute',
+  top: '50%',
+  left: '50%',
+  transform: 'translate(-50%, -50%)',
+  width: 300,
+  bgcolor: 'white',
+  boxShadow: 24,
+  p: 4,
+  borderRadius: '10px',
+};
+
+const ListProduct = ({ bloc }) => {
+  const [modal, setModal] = useState(false);
+  const [editedData, setEditedData] = useState({});
+  const handleModal = (status) => {
+    setModal(status);
+  };
+
+  const { getListProducts, product, handleDelete, handleAdd, getProduct } =
+    bloc();
 
   useEffect(() => {
-    dispatch(getProducts());
+    getListProducts();
   }, []);
 
   return (
     <>
-      <Table>
-        <TableHead>
-          {product.header ? (
-            <TableRow>
-              {product.header.map((val, idx) => {
-                return <TableCell key={idx}>{val}</TableCell>;
-              })}
-            </TableRow>
-          ) : (
-            ''
-          )}
-        </TableHead>
-        <TableBody>
-          {!product.loading ? (
-            product.data ? (
+      <Button
+        onClick={() => {
+          setEditedData({});
+          handleModal(true);
+        }}
+      >
+        Add Product
+      </Button>
+      <TableContainer sx={{ maxHeight: 440 }}>
+        <Table>
+          <TableHead>
+            {product.header ? (
+              <TableRow>
+                {product.header.map((val, idx) => {
+                  return <TableCell key={idx}>{val}</TableCell>;
+                })}
+              </TableRow>
+            ) : (
+              ''
+            )}
+          </TableHead>
+          <TableBody>
+            {product.data && product.data.length > 0 ? (
               product.data.map((val, idx) => {
                 return (
                   <TableRow key={idx}>
@@ -45,23 +72,20 @@ const ListProduct = () => {
                     <TableCell>
                       <Button
                         onClick={() => {
-                          navigate(`edit/${val.id}`);
+                          setEditedData(val);
+                          handleModal(true);
                         }}
-                        sx={{ margin: '2px' }}
                         size='small'
-                        variant='outlined'
+                        color='warning'
                       >
                         Update
                       </Button>
                       <Button
                         onClick={() => {
-                          if (window.confirm('Are you sure want to delete?'))
-                            dispatch(deleteProduct(val.id));
+                          handleDelete(idx);
                         }}
-                        sx={{ margin: '2px' }}
                         size='small'
-                        margin='2px'
-                        variant='outlined'
+                        color='warning'
                       >
                         Delete
                       </Button>
@@ -71,31 +95,32 @@ const ListProduct = () => {
               })
             ) : (
               <TableRow>
-                <TableCell colSpan={2} align={'center'}>
+                <TableCell colSpan={4} align={'center'}>
                   No Data Available !
                 </TableCell>
               </TableRow>
-            )
-          ) : (
-            <TableRow>
-              <TableCell colSpan={3} align={'center'}>
-                Loading...
-              </TableCell>
-            </TableRow>
-          )}
-        </TableBody>
-      </Table>
-      <Snackbar
-        style={{ top: '90px' }}
-        anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
-        open={product.snackbar.open}
-        onClose={() => dispatch(setSnackbar({ open: false, message: '' }))}
-        autoHideDuration={2000}
+            )}
+          </TableBody>
+        </Table>
+      </TableContainer>
+      <Modal
+        open={modal}
+        onClose={() => handleModal(false)}
+        aria-labelledby='modal-modal-title'
+        aria-describedby='modal-modal-description'
       >
-        <Alert severity='success' sx={{ width: '100%' }}>
-          {product.snackbar.message ?? ''}
-        </Alert>
-      </Snackbar>
+        <Box sx={modalStyle} gap='20px'>
+          <Typography variant='h5' textAlign='center'>
+            Add Product
+          </Typography>
+          <FormProduct
+            editedData={editedData}
+            handleAdd={handleAdd}
+            handleModal={handleModal}
+            getProduct={getProduct}
+          />
+        </Box>
+      </Modal>
     </>
   );
 };

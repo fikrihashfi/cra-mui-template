@@ -1,24 +1,23 @@
 import { useDispatch } from 'react-redux';
-import { addMenu } from '../../redux/actions';
 import Form from '../common/form/Form';
 import { useFormik } from 'formik';
 import { Grid, TextField, Button } from '@mui/material';
 import { menuValidationSchema } from '../../utils/validations';
 
-const FormMenu = (props) => {
-  const dispatch = useDispatch();
+const FormMenu = ({ handleAdd, handleModal}) => {
 
   const formik = useFormik({
     initialValues: {
+      idx: '',
       idMenu: '',
       name: '',
       price: '',
     },
     validationSchema: menuValidationSchema,
     onSubmit: (values, { resetForm }) => {
-      dispatch(addMenu(values));
+      handleAdd(values);
       resetForm();
-      if (props.setModal) props.setModal(false);
+      if (handleModal) handleModal(false);
     },
   });
 
@@ -70,7 +69,7 @@ const FormMenu = (props) => {
             <div style={{ textAlign: 'right' }}>
               <Button
                 onClick={() => {
-                  if (props.setModal) props.setModal(false);
+                  if (handleModal) handleModal(false);
                 }}
                 type='button'
                 color='warning'

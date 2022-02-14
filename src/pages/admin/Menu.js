@@ -1,6 +1,6 @@
 import { Container, Box } from '@mui/material';
 import { Route, Routes } from 'react-router-dom';
-import FormMenu from '../../components/menu/FormMenu';
+import MenuListBloc from '../../bloc/menu/MenuListBloc';
 import ListMenu from '../../components/menu/ListMenu';
 
 const Menu = (props) => {
@@ -9,8 +9,7 @@ const Menu = (props) => {
       <Container  id={props.id ?? ''}>
         <Box p="50px">
           <Routes>
-            <Route path='/' element={<ListMenu />} />
-            <Route path='add' element={<FormMenu />} />
+            <Route path='/' element={<ListMenu bloc={() => MenuListBloc()} />} />
           </Routes>
         </Box>
       </Container>

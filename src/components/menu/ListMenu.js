@@ -11,8 +11,6 @@ import {
 } from '@mui/material';
 import { Box } from '@mui/system';
 import { useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { deleteMenu } from '../../redux/actions';
 import FormMenu from './FormMenu';
 
 const modalStyle = {
@@ -27,10 +25,10 @@ const modalStyle = {
   borderRadius: '10px',
 };
 
-const ListMenu = () => {
+const ListMenu = ({ bloc }) => {
   const [modal, setModal] = useState(false);
-  const menu = useSelector((state) => state.menu);
-  const dispatch = useDispatch();
+  const { menu, handleDelete, handleAdd } = bloc();
+
   const handleModal = (status) => {
     setModal(status);
   };
@@ -62,7 +60,7 @@ const ListMenu = () => {
                     <TableCell>
                       <Button
                         onClick={() => {
-                          dispatch(deleteMenu(idx));
+                          handleDelete(idx);
                         }}
                         size='small'
                         color='warning'
@@ -93,7 +91,7 @@ const ListMenu = () => {
           <Typography variant='h5' textAlign='center'>
             Add Menu
           </Typography>
-          <FormMenu setModal={setModal} />
+          <FormMenu handleAdd={handleAdd} />
         </Box>
       </Modal>
     </>

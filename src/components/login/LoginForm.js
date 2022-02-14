@@ -1,3 +1,4 @@
+import { TextField } from '@mui/material';
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
@@ -59,7 +60,7 @@ const LoginForm = () => {
 
   return (
     <Form handleFormSubmit={handleFormSubmit} defaultBtn={false}>
-      <Input
+      <TextField
         id='email'
         label='Email'
         error={formError.email}
@@ -68,8 +69,8 @@ const LoginForm = () => {
           login.validateEmail(form, changeInputValidation);
           checkDisableButton();
         }}
-      ></Input>
-      <Input
+      ></TextField>
+      <TextField
         id='password'
         label='Password'
         type='password'
@@ -79,7 +80,7 @@ const LoginForm = () => {
           login.validatePassword(form, changeInputValidation);
           checkDisableButton();
         }}
-      ></Input>
+      ></TextField>
       <div className='d-flex flex-column justify-content-center'>
         <Button
           text='Login'

@@ -1,6 +1,6 @@
 import { Container, Box } from '@mui/material';
 import { Route, Routes } from 'react-router-dom';
-import FormProduct from '../../components/product/FormProduct';
+import ProductListBloc from '../../bloc/product/ProductListBloc';
 import ListProduct from '../../components/product/ListProduct';
 
 const Product = (props) => {
@@ -9,9 +9,7 @@ const Product = (props) => {
       <Container id={props.id ?? ''}>
         <Box p='50px'>
           <Routes>
-            <Route path='/' element={<ListProduct />} />
-            <Route path='add' element={<FormProduct />} />
-            <Route path='edit/:id' element={<FormProduct />} />
+            <Route path='/' element={<ListProduct bloc={() => ProductListBloc()} />} />
           </Routes>
         </Box>
       </Container>

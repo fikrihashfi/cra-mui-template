@@ -1,8 +1,6 @@
 export const pages = {
   home: 'Home',
   menu: 'Menu',
-  table: 'Table',
-  customer: 'Customer',
   product: 'Product',
 };
 
