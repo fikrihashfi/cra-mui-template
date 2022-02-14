@@ -1,66 +1,99 @@
-import { useDispatch, useSelector } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
-import { deleteMenu } from '../../redux/actions';
-import Button from '../common/button/Button';
-import Table from '../common/table/Table';
-import TableBody from '../common/table/TableBody';
-import TableHead from '../common/table/TableHead';
+import {
+  TableContainer,
+  TableCell,
+  TableRow,
+  Table,
+  TableBody,
+  TableHead,
+  Modal,
+  Button,
+  Typography,
+} from '@mui/material';
+import { Box } from '@mui/system';
+import { useState } from 'react';
+import FormMenu from './FormMenu';
 
-const ListMenu = () => {
-  const menu = useSelector((state) => state.menu);
-  const dispatch = useDispatch();
-  const navigate = useNavigate();
+const modalStyle = {
+  position: 'absolute',
+  top: '50%',
+  left: '50%',
+  transform: 'translate(-50%, -50%)',
+  width: 300,
+  bgcolor: 'white',
+  boxShadow: 24,
+  p: 4,
+  borderRadius: '10px',
+};
+
+const ListMenu = ({ bloc }) => {
+  const [modal, setModal] = useState(false);
+  const { menu, handleDelete, handleAdd } = bloc();
+
+  const handleModal = (status) => {
+    setModal(status);
+  };
 
   return (
     <>
-      <Button
-        handleClick={() => {
-          navigate('/admin/menu/add');
-        }}
-        text='Add Menu'
-        className='btn-primary m-4'
-      />
-      <Table>
-        <TableHead>
-          {menu.header ? (
-            <tr>
-              {menu.header.map((val, idx) => {
-                return <td key={idx}>{val}</td>;
-              })}
-            </tr>
-          ) : (
-            ''
-          )}
-        </TableHead>
-        <TableBody>
-          {menu.data ? (
-            menu.data.map((val, idx) => {
-              return (
-                <tr key={idx}>
-                  <td>{idx + 1}</td>
-                  <td>{val.name}</td>
-                  <td>Rp.{val.price},-</td>
-                  <td>
-                    <Button
-                      handleClick={() => {
-                        dispatch(deleteMenu(idx));
-                      }}
-                      text='Delete'
-                      className='btn-danger m-1 btn-sm'
-                    />
-                  </td>
-                </tr>
-              );
-            })
-          ) : (
-            <tr>
-              <td colSpan={4} align={'center'}>
-                No Data Available !
-              </td>
-            </tr>
-          )}
-        </TableBody>
-      </Table>
+      <Button onClick={() => handleModal(true)}>Add Menu</Button>
+      <TableContainer sx={{ maxHeight: 440 }}>
+        <Table>
+          <TableHead>
+            {menu.header ? (
+              <TableRow>
+                {menu.header.map((val, idx) => {
+                  return <TableCell key={idx}>{val}</TableCell>;
+                })}
+              </TableRow>
+            ) : (
+              ''
+            )}
+          </TableHead>
+          <TableBody>
+            {menu.data && menu.data.length > 0 ? (
+              menu.data.map((val, idx) => {
+                return (
+                  <TableRow key={idx}>
+                    <TableCell>{idx + 1}</TableCell>
+                    <TableCell>{val.name}</TableCell>
+                    <TableCell>Rp.{val.price},-</TableCell>
+                    <TableCell>
+                      <Button
+                        onClick={() => {
+                          handleDelete(idx);
+                        }}
+                        size='small'
+                        color='warning'
+                      >
+                        Delete
+                      </Button>
+                    </TableCell>
+                  </TableRow>
+                );
+              })
+            ) : (
+              <TableRow>
+                <TableCell colSpan={4} align={'center'}>
+                  No Data Available !
+                </TableCell>
+              </TableRow>
+            )}
+          </TableBody>
+        </Table>
+      </TableContainer>
+      <Modal
+        open={modal}
+        onClose={() => handleModal(false)}
+        aria-labelledby='modal-modal-title'
+        aria-describedby='modal-modal-description'
+      >
+        <Box sx={modalStyle} gap='20px'>
+          <Typography variant='h5' textAlign='center'>
+            Add Menu
+          </Typography>
+          <FormMenu handleAdd={handleAdd} />
+        </Box>
+      </Modal>
     </>
   );
 };

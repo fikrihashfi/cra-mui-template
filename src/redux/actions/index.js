@@ -1,3 +1,2 @@
-export * from './Table';
+export * from './Product';
 export * from './Menu';
-export * from './Customer';

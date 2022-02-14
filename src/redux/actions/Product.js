@@ -1,17 +1,24 @@
-import { ADD_PRODUCT, REPLACE_PRODUCT, SET_LOADING_PRODUCT, UPDATE_PRODUCT } from '../types';
-import axios from 'axios';
-import { loadingForm, replaceForm } from './Form';
+import {
+  ADD_PRODUCT,
+  REPLACE_PRODUCT,
+  SET_LOADING_PRODUCT,
+  SET_SNACKBAR,
+} from '../types';
+import client from '../../utils/fetcher';
 
 export const getProducts = () => {
   return async (dispatch) => {
     dispatch(loadingProduct(true));
-    axios
-      .get('http://localhost:3000/products')
+
+    return await client
+      .get(`${process.env.REACT_APP_API_URL}/products`)
       .then((res) => {
         dispatch(replaceProduct(res.data.products));
+        return res;
       })
       .catch((err) => {
         console.log(err);
+        return err
       })
       .finally(() => {
         dispatch(loadingProduct(false));
@@ -19,19 +26,21 @@ export const getProducts = () => {
   };
 };
 
-export const getProduct = (id) => {
+export const getProductById = (id) => {
   return async (dispatch) => {
-    dispatch(loadingForm(true));
-    axios
-      .get(`http://localhost:3000/products/${id}`)
+    dispatch(loadingProduct(true));
+
+    return await client
+      .get(`/products/${id}`)
       .then((res) => {
-        dispatch(replaceForm(res.data));
+        return res
       })
       .catch((err) => {
         console.log(err);
+        return err
       })
       .finally(() => {
-        dispatch(loadingForm(false));
+        dispatch(loadingProduct(false));
       });
   };
 };
@@ -39,10 +48,11 @@ export const getProduct = (id) => {
 export const deleteProduct = (id) => {
   return async (dispatch) => {
     dispatch(loadingProduct(true));
-    axios
-      .delete(`http://localhost:3000/products/delete/${id}`)
+    client
+      .delete(`/products/delete/${id}`)
       .then((res) => {
         dispatch(loadingProduct(false));
+        dispatch(setSnackbar({ open: true, message: 'Delete Success !' }));
         dispatch(getProducts());
       })
       .catch((err) => {
@@ -52,15 +62,27 @@ export const deleteProduct = (id) => {
   };
 };
 
-export const addProduct = (data) => {
-  return (dispatch) => {
-    dispatch({ type: ADD_PRODUCT, payload: data });
+export const updateProduct = ({ id, data }) => {
+  return async (dispatch) => {
+    dispatch(loadingProduct(true));
+    client
+      .put(`/products/${id}`, data)
+      .then((res) => {
+        dispatch(replaceProduct(res.data));
+        dispatch(setSnackbar({ open: true, message: 'Update Success !' }));
+      })
+      .catch((err) => {
+        console.log(err);
+      })
+      .finally(() => {
+        dispatch(loadingProduct(false));
+      });
   };
 };
 
-export const updateProduct = (data) => {
+export const addProduct = (data) => {
   return (dispatch) => {
-    dispatch({ type: UPDATE_PRODUCT, payload: data });
+    dispatch({ type: ADD_PRODUCT, payload: data });
   };
 };
 
@@ -73,5 +95,11 @@ export const replaceProduct = (data) => {
 export const loadingProduct = (data) => {
   return (dispatch) => {
     dispatch({ type: SET_LOADING_PRODUCT, payload: data });
+  };
+};
+
+export const setSnackbar = (data) => {
+  return (dispatch) => {
+    dispatch({ type: SET_SNACKBAR, payload: data });
   };
 };

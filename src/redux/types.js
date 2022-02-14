@@ -20,6 +20,7 @@ export const CHANGE_FORM_ERROR = "CHANGE_FORM_ERROR"
 export const CLEAR_FORM = "CLEAR_FORM"
 export const REPLACE_FORM = "REPLACE_FORM"
 export const SET_LOADING_FORM = "SET_LOADING_FORM"
+export const SET_SNACKBAR = "SET_SNACKBAR"
 
 // AUTH ACTION TYPE
 export const SET_AUTH = "SET_AUTH"

@@ -4,11 +4,16 @@ import {
   REPLACE_PRODUCT,
   SET_LOADING_PRODUCT,
   UPDATE_PRODUCT,
+  SET_SNACKBAR,
 } from '../types';
 
 const initialState = {
+  snackbar: {
+    open: false,
+    message: ''
+  },
   loading: false,
-  header: ['#', 'Product Name'],
+  header: ['#', 'Product Name', 'Action'],
   data: [
     {
       id: '1',
@@ -35,6 +40,8 @@ const product = (state = initialState, { type, payload }) => {
       return { ...state, data: [...payload] };
     case SET_LOADING_PRODUCT:
       return { ...state, loading: payload };
+    case SET_SNACKBAR:
+      return { ...state, snackbar: payload };
     default:
       return state;
   }

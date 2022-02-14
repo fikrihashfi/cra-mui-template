@@ -1,7 +1,7 @@
 import { SET_AUTH } from '../types';
 
 const initialState = {
-  isLogin: true, 
+  isLogin: false, 
   user: {
       email: '',
   }
