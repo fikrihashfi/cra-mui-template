@@ -1,7 +1,8 @@
+import { TableBody } from '@mui/material';
 import React from 'react';
 
-const TableBody = (props) => {
-    return <tbody className='table-light'>{props.children}</tbody>;
+const CTableBody = (props) => {
+    return <TableBody>{props.children}</TableBody>;
 }
 
-export default TableBody
+export default CTableBody

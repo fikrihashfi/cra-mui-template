@@ -1,8 +1,12 @@
+import { TableCell, TableRow, Button, Alert, Snackbar } from '@mui/material';
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { deleteProduct, getProducts } from '../../redux/actions/Product';
-import Button from '../common/button/Button';
+import {
+  deleteProduct,
+  getProducts,
+  setSnackbar,
+} from '../../redux/actions/Product';
 import Table from '../common/table/Table';
 import TableBody from '../common/table/TableBody';
 import TableHead from '../common/table/TableHead';
@@ -21,11 +25,11 @@ const ListProduct = () => {
       <Table>
         <TableHead>
           {product.header ? (
-            <tr>
+            <TableRow>
               {product.header.map((val, idx) => {
-                return <td key={idx}>{val}</td>;
+                return <TableCell key={idx}>{val}</TableCell>;
               })}
-            </tr>
+            </TableRow>
           ) : (
             ''
           )}
@@ -35,45 +39,63 @@ const ListProduct = () => {
             product.data ? (
               product.data.map((val, idx) => {
                 return (
-                  <tr key={idx}>
-                    <td>{idx + 1}</td>
-                    <td>{val.name}</td>
-                    <td>
-                    <Button
-                      handleClick={() => {
-                        navigate(`edit/${val.id}`)
-                      }}
-                      text='Update'
-                      className='btn-warning m-1 btn-sm text-white'
-                    ></Button>
-                    <Button
-                      handleClick={() => {
-                        if(window.confirm('Are you sure want to delete?'))
-                          dispatch(deleteProduct(val.id));
-                      }}
-                      text='Delete'
-                      className='btn-danger m-1 btn-sm'
-                    ></Button>
-                  </td>
-                  </tr>
+                  <TableRow key={idx}>
+                    <TableCell>{idx + 1}</TableCell>
+                    <TableCell>{val.name}</TableCell>
+                    <TableCell>
+                      <Button
+                        onClick={() => {
+                          navigate(`edit/${val.id}`);
+                        }}
+                        sx={{ margin: '2px' }}
+                        size='small'
+                        variant='outlined'
+                      >
+                        Update
+                      </Button>
+                      <Button
+                        onClick={() => {
+                          if (window.confirm('Are you sure want to delete?'))
+                            dispatch(deleteProduct(val.id));
+                        }}
+                        sx={{ margin: '2px' }}
+                        size='small'
+                        margin='2px'
+                        variant='outlined'
+                      >
+                        Delete
+                      </Button>
+                    </TableCell>
+                  </TableRow>
                 );
               })
             ) : (
-              <tr>
-                <td colSpan={2} align={'center'}>
+              <TableRow>
+                <TableCell colSpan={2} align={'center'}>
                   No Data Available !
-                </td>
-              </tr>
+                </TableCell>
+              </TableRow>
             )
           ) : (
-            <tr>
-              <td colSpan={2} align={'center'}>
+            <TableRow>
+              <TableCell colSpan={3} align={'center'}>
                 Loading...
-              </td>
-            </tr>
+              </TableCell>
+            </TableRow>
           )}
         </TableBody>
       </Table>
+      <Snackbar
+        style={{ top: '90px' }}
+        anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
+        open={product.snackbar.open}
+        onClose={() => dispatch(setSnackbar({ open: false, message: '' }))}
+        autoHideDuration={2000}
+      >
+        <Alert severity='success' sx={{ width: '100%' }}>
+          {product.snackbar.message ?? ''}
+        </Alert>
+      </Snackbar>
     </>
   );
 };

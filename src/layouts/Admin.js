@@ -1,5 +1,4 @@
 import Navbar from '../components/common/Navbar';
-import Footer from '../components/common/Footer';
 import { useDispatch } from 'react-redux';
 import { useEffect } from 'react';
 import { replaceCustomer, replaceMenu, replaceTable } from '../redux/actions';

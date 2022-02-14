@@ -1,78 +1,95 @@
-import React, { useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
 import { addMenu } from '../../redux/actions';
-import {
-  changeFormError,
-  clearForm,
-} from '../../redux/actions/Form';
-import { pages } from '../../utils/params';
-import { menu, validations } from '../../utils/validations';
-import Button from '../common/button/Button';
 import Form from '../common/form/Form';
-import Input from '../common/form/Input';
+import { useFormik } from 'formik';
+import { Grid, TextField, Button } from '@mui/material';
+import { menuValidationSchema } from '../../utils/validations';
 
-const FormMenu = () => {
-  const navigate = useNavigate();
+const FormMenu = (props) => {
   const dispatch = useDispatch();
-  const { form, formError } = useSelector((state) => state.form);
-  const changeInputValidation = (form) => dispatch(changeFormError(form));
 
-  const handleFormSubmit = (e) => {
-    e.preventDefault();
-    if (validations[pages.menu].validate(form, changeInputValidation)) {
-      dispatch(addMenu(form));
-      dispatch(clearForm());
-      navigate('/admin/menu');
-    }
-  };
-
-  useEffect(() => {
-    dispatch(clearForm());
-  }, []);
+  const formik = useFormik({
+    initialValues: {
+      idMenu: '',
+      name: '',
+      price: '',
+    },
+    validationSchema: menuValidationSchema,
+    onSubmit: (values, { resetForm }) => {
+      dispatch(addMenu(values));
+      resetForm();
+      if (props.setModal) props.setModal(false);
+    },
+  });
 
   return (
     <>
-      <Form handleFormSubmit={handleFormSubmit} defaultBtn={false}>
-        <Input
-          id='idMenu'
-          name='idMenu'
-          label='ID Menu'
-          error={formError.idMenu}
-          placeholder='Enter ID'
-          value={form.idMenu}
-          validation={() => menu.validateIdMenu(form, changeInputValidation)}
-        ></Input>
-        <Input
-          id='name'
-          name='name'
-          label='Name'
-          error={formError.name}
-          placeholder='Enter Name'
-          value={form.name}
-          validation={() => menu.validateName(form, changeInputValidation)}
-        ></Input>
-        <Input
-          id='price'
-          name='price'
-          label='Price'
-          type='number'
-          error={formError.price}
-          placeholder='Enter Price'
-          value={form.price}
-          validation={() => menu.validatePrice(form, changeInputValidation)}
-        ></Input>
-        <div>
-          <Button
-            handleClick={() => {
-              navigate('/admin/menu');
-            }}
-            type='button'
-            text='Cancel'
-            className='btn-warning text-white m-2'
-          />
-          <Button type='submit' text='Save' className='btn-success m-2' />
-        </div>
+      <Form handleFormSubmit={formik.handleSubmit} defaultBtn={false}>
+        <Grid container spacing={1}>
+          <Grid item md={12}>
+            <TextField
+              fullWidth
+              id='idMenu'
+              name='idMenu'
+              label='ID Menu'
+              value={formik.values.idMenu}
+              onChange={formik.handleChange}
+              error={formik.touched.idMenu && Boolean(formik.errors.idMenu)}
+              helperText={formik.touched.idMenu && formik.errors.idMenu}
+              variant='standard'
+            ></TextField>
+          </Grid>
+          <Grid item md={12}>
+            <TextField
+              fullWidth
+              id='name'
+              name='name'
+              label='Name'
+              value={formik.values.name}
+              onChange={formik.handleChange}
+              error={formik.touched.name && Boolean(formik.errors.name)}
+              helperText={formik.touched.name && formik.errors.name}
+              variant='standard'
+            ></TextField>
+          </Grid>
+          <Grid item md={12}>
+            <TextField
+              fullWidth
+              id='price'
+              name='price'
+              label='Price'
+              type='number'
+              value={formik.values.price}
+              onChange={formik.handleChange}
+              error={formik.touched.price && Boolean(formik.errors.price)}
+              helperText={formik.touched.price && formik.errors.price}
+              variant='standard'
+            ></TextField>
+          </Grid>
+          <Grid item md={12} marginTop='10px'>
+            <div style={{ textAlign: 'right' }}>
+              <Button
+                onClick={() => {
+                  if (props.setModal) props.setModal(false);
+                }}
+                type='button'
+                color='warning'
+                variant='contained'
+                style={{ margin: '2px' }}
+              >
+                Cancel
+              </Button>
+              <Button
+                type='submit'
+                color='success'
+                variant='contained'
+                style={{ margin: '2px' }}
+              >
+                Save
+              </Button>
+            </div>
+          </Grid>
+        </Grid>
       </Form>
     </>
   );

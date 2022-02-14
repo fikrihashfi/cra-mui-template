@@ -40,40 +40,6 @@ const Navbar = (props) => {
   const handleCloseUserMenu = () => {
     setAnchorElUser(null);
   };
-  // return (
-  //   <div id='navbar' className='d-flex flex-wrap'>
-  //     <h4 style={{ margin: 0 }}>BAKARI</h4>
-  //     <nav
-  //       className='d-flex justify-content-between flex-wrap'
-  //       style={{ flex: 1, margin: 0, marginLeft: '10px' }}
-  //     >
-  //       <div className='d-flex flex-wrap'>
-  //         {Object.keys(pages).map((key, idx) => {
-  //           return (
-  //             <Link
-  //               key={idx}
-  //               className='link'
-  //               to={`/admin/${pages[key].toLowerCase()}`}
-  //             >
-  //               {pages[key]}
-  //             </Link>
-  //           );
-  //         })}
-  //       </div>
-  //       <div>
-  //         <a
-  //           className='link'
-  //           href='#navbar'
-  //           onClick={() => {
-  //             dispatch(setAuth({ isLogin: false, user: {} }));
-  //           }}
-  //         >
-  //           Logout
-  //         </a>
-  //       </div>
-  //     </nav>
-  //   </div>
-  // );
 
   return (
     <AppBar position="static">

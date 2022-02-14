@@ -1,3 +1,12 @@
+import * as yup from 'yup';
+
+export const menuValidationSchema = yup.object({
+  idMenu: yup.string('Enter id').required('ID is required'),
+  name: yup.string('Enter name').required('Name is required'),
+  price: yup.string('Enter Price').required('Price is required'),
+});
+
+
 export const login = {
   validate(form, changeFormError) {
     let validateEmail = this.validateEmail(form, changeFormError);

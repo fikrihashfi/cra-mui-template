@@ -5,7 +5,7 @@ import Menu from './pages/admin/Menu';
 import Table from './pages/admin/Table';
 import Customer from './pages/admin/Customer';
 import Home from './pages/admin/Home';
-import Layout from './layouts/Admin';
+import Layout from './layouts/AdminDrawer';
 import NotFound from './pages/NotFound';
 import Product from './pages/admin/Product';
 

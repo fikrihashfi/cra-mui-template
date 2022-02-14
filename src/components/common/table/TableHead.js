@@ -1,7 +1,8 @@
+import { TableHead } from '@mui/material';
 import React from 'react';
 
-const TableHead = (props) => {
-  return <thead>{props.children}</thead>;
+const CTableHead = (props) => {
+  return <TableHead>{props.children}</TableHead>;
 };
 
-export default TableHead;
+export default CTableHead;

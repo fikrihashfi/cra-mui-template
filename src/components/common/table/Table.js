@@ -1,11 +1,12 @@
+import { Table, TableContainer } from '@mui/material';
 import React from 'react';
 
-const Table = (props) => {
+const CTable = (props) => {
   return (
-    <div className='table-responsive m-4'>
-      <table className='table'>{props.children}</table>
-    </div>
+    <TableContainer sx={{ maxHeight: 440 }}>
+      <Table stickyHeader aria-label="sticky table">{props.children}</Table>
+    </TableContainer>
   );
 };
 
-export default Table;
+export default CTable;
