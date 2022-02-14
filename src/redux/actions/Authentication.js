@@ -8,8 +8,6 @@ export const setAuth = (data) => {
         'allData',
         JSON.stringify({
           menus: state.menu.data,
-          tables: state.table.data,
-          customers: state.customer.data,
         })
       );
     }

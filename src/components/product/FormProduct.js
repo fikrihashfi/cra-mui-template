@@ -5,7 +5,6 @@ import { useFormik } from 'formik';
 import { useEffect } from 'react';
 
 const FormProduct = ({ getProduct, editedData, handleAdd, handleModal }) => {
-
   const formik = useFormik({
     initialValues: {
       id: '',
@@ -13,19 +12,19 @@ const FormProduct = ({ getProduct, editedData, handleAdd, handleModal }) => {
     },
     validationSchema: productValidationSchema,
     onSubmit: (values, { resetForm }) => {
-      handleAdd(values)
+      handleAdd(values);
       resetForm();
       if (handleModal) handleModal(false);
     },
   });
-  
-  useEffect(()=>{
-    if(editedData.id!=null){
-      getProduct(editedData.id).then((val)=>{
-        formik.setValues(val.data)
-      })
+
+  useEffect(() => {
+    if (editedData.id != null) {
+      getProduct(editedData.id).then((val) => {
+        formik.setValues(val.data);
+      });
     }
-  }, [editedData.id])
+  }, [editedData.id]);
 
   return (
     <>

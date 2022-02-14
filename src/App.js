@@ -1,14 +1,12 @@
 import AppRouter from './routes/AppRouter';
 import { BrowserRouter as Router } from 'react-router-dom';
-import Layout from './layouts/Admin';
+import './assets/css/style.css'
 
 const App = () => {
   return (
     <>
       <Router>
-        <Layout>
-          <AppRouter />
-        </Layout>
+        <AppRouter />
       </Router>
     </>
   );
